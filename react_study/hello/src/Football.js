@@ -1,0 +1,8 @@
+export default function Football() {
+    const shoot = (a) => {
+        alert(a);
+    }
+    return (
+        <button onClick = {() => shoot("Goal!!")} > Take the shot! </button>
+    )
+}
