@@ -13,10 +13,11 @@ const initialTodos = [
     },
 ];
 
+// 컴포넌트 외부에서 상태를 변경하는 reduce 함수선언,
 const reducer = (state, action) => {
     switch(action.type) {
         case "COMPLETE":
-            return stete.map((todo) => {
+            return state.map((todo) => {
                 if(todo.id === action.id) {
                     return{ ...todo, complete: !todo.complete };
                 } else {

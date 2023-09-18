@@ -1,13 +1,15 @@
 import { useState, useCallback } from "react";
 import Todos from "./Todos";
 
-const useCallbackApp = () => {
+const UseCallbackApp = () => {
     const [count, setCount] = useState(0);
     const [todos, setTodos] = useState([]);
 
     const increment = () => {
         setCount((c) => c + 1);
     };
+
+    //useCallback 훅 등록
     const addTodo = useCallback(() => {
         setTodos((t) => [...t, "New Todo"]);
     }, [todos]);
@@ -24,4 +26,4 @@ const useCallbackApp = () => {
     );
 };
 
-export default useCallbackApp;
+export default UseCallbackApp;
