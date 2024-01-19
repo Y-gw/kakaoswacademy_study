@@ -1,54 +1,36 @@
-import PropTypes from "prop-types";
-import TaskList from "./components/TaskList";
-import { useTasks } from "./useTasks";
+import React from 'react';
+import { rest } from 'msw';
+import { InboxScreen } from './InboxScreen';
+import { Default as TaskListDefault } from './components/TaskList.stories';
 
-export default function InboxScreen({ error }) {
-  const [tasks, dispatch] = useTasks();
-
-  const archiveTask = (archive, id) => {
-    dispatch({ type: archive ? "ARCHIVE_TASK" : "INBOX_TASK", id });
-  };
-
-  const togglePinTask = (state, id) => {
-    dispatch({
-      type: state === "TASK_PINNED" ? "INBOX_TASK" : "PIN_TASK",
-      id,
-    });
-  };
-
-  const editTitle = (title, id) => {
-    dispatch({ type: "EDIT_TITLE", id, title });
-  };
-
-  if (error) {
-    return (
-      <div className="page lists-show">
-        <div className="wrapper-message">
-          <span className="icon-face-sad" />
-          <p className="title-message">Oh no!</p>
-          <p className="subtitle-message">Something went wrong</p>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div className="page lists-show">
-      <nav>
-        <h1 className="title-page">Taskbox</h1>
-      </nav>
-      <TaskList
-        tasks={tasks}
-        onArchiveTask={archiveTask}
-        onTogglePinTask={togglePinTask}
-        onEditTitle={editTitle}
-      />
-    </div>
-  );
-}
-InboxScreen.propTypes = {
-  error: PropTypes.string,
+export default {
+  component: InboxScreen,
+  title: 'InboxScreen',
 };
 
-InboxScreen.defaultProps = {
-  error: "",
+const Template = (args) => <InboxScreen {...args} />;
+
+export const Default = Template.bind({});
+Default.parameters = {
+  msw: {
+    handlers: [
+      rest.get('/tasks', (req, res, ctx) => {
+        return res(ctx.json(TaskListDefault.args));
+      }),
+    ],
+  },
+};
+
+export const Error = Template.bind({});
+Error.args = {
+  error: 'Something',
+};
+Error.parameters = {
+  msw: {
+    handlers: [
+      rest.get('/tasks', (req, res, ctx) => {
+        return res(ctx.json([]));
+      }),
+    ],
+  },
 };
