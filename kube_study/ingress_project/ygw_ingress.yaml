@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - host: kea.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ygw-service
+            port:
+              number: 80
+      - path: /YGW
+        pathType: Prefix
+        backend:
+          service:
+            name: ygw-service
+            port:
+              number: 80
